@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/common/Constants.js"],"names":["Constants","GET_ROOMS"],"mappings":";;;;;;;;IAAqBA,S;;;;AAAAA,S,CACVC,S,GAAY,W;kBADFD,S","file":"Constants.js","sourcesContent":["export default class Constants {\n    static GET_ROOMS = 'get_rooms';\n}\n"]}

@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Socket.IO chat</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font: 13px Helvetica, Arial;
+    }
+
+    .content {
+      background: #000;
+      padding: 3px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .content input {
+      border: 0;
+      padding: 10px;
+      width: 90%;
+      margin-right: .5%;
+    }
+
+    .content button {
+      width: 9%;
+      background: rgb(130, 224, 255);
+      border: none;
+      padding: 10px;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages li {
+      padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div>
+      <input id="roomNO" placeholder="请输入房间号" />
+      <button id="joinRoom">加入房间</button>
+    </div>
+
+    <div>
+      <input id="nickName" placeholder="请输入用户名" />
+      <button id="createRoom">创建房间</button>
+    </div>
+
+
+  </div>
+
+  <ul id="messages"></ul>
+  <div class="content">
+    <input id="m" autocomplete="off" /><button id="send">Send</button>
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="libs/jquery-1.11.1.js"></script>
+  <script>
+    $(function () {
+      var isCreate = false;
+      var socket;
+
+      function initSocketIO(nick, cb) {
+        socket = io('/chat', { query: 'name=' + nick });
+
+        socket.on('connect', function () {
+          socket.emit('hi! I am ' + nick);
+          cb && cb();
+        })
+
+        socket.on('serverSendUserChat', function (msg) {
+          console.log('@@##server from msg:' + JSON.stringify(msg));
+          $('#messages').append($('<li>').text(msg.nick + '-' + msg.message));
+        })
+
+        socket.on('joinedRoom', function (data) {
+          console.log('@@##createdRoom:' + JSON.stringify(data));
+          if (data.code == 0) {
+            isCreate = true
+          } else {
+            console.log(data.result);
+          }
+        })
+
+        //游戏通信
+        socket.on('game', function (data) {
+          console.log('@@##game:' + JSON.stringify(data));
+        });
+      }
+
+      $('form').submit(function () {
+        if (!isCreate) {
+          return;
+        }
+        socket.emit('userChat', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+
+      function send() {
+        if (!isCreate) {
+          return;
+        }
+        socket.emit('userChat', $('#m').val());
+        $('#m').val('');
+      }
+
+      $('#send').click(function () {
+        send();
+      })
+
+      $('#createRoom').click(function () {
+        createRoom();
+      })
+
+      $('#joinRoom').click(function () {
+        joinRoom();
+      })
+
+      function createRoom() {
+        var name = $('#nickName')[0].value;
+        var roomNO = $('#roomNO')[0].value;
+        if (!name) {
+          alert('请输入用户名');
+          return;
+        }
+        initSocketIO(name, function () {
+          socket.emit('createRoom', { name: name, roomId: roomNO }, function (result) {
+            console.log('@@##createRoom !' + JSON.stringify(result));
+          });
+        });
+
+      }
+
+      function joinRoom() {
+        if (!socket) {
+          var name = $('#nickName')[0].value;
+          if (!name) {
+            alert('请输入用户名');
+            return;
+          }
+          initSocketIO(name, function () {
+            var no = $('#roomNO')[0].value;
+            console.log('@@##room no is :' + no);
+            socket.emit('joinRoom', { roomId: no });
+          })
+          return;
+        }
+        var no = $('#roomNO')[0].value;
+        console.log('@@##room no is :' + no);
+        socket.emit('joinRoom', { roomId: no });
+      }
+      // socket.on()
+    });
+  </script>
+
+</body>
+</html
