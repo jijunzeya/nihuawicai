@@ -11,7 +11,7 @@ Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 import VueSocketio from 'vue-socket.io';
-Vue.use(VueSocketio, 'http://127.0.0.1:3000/chat');
+Vue.use(VueSocketio, 'http://10.68.15.131:3000/chat');
 
 new Vue({
   el: '#app',
