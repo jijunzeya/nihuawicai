@@ -1,16 +1,21 @@
 <template>
     <div class="main">
-        <div class="header">头部</div>
-        <div class="content">
+        <!-- <div class="header">头部</div> -->
+        <!-- <div class="content"> -->
             <div class="form">
-                <input type="text" v-model="loginInfo.tel" placeholder="请输入手机号"></input>
-                <input type="text" v-model="loginInfo.name" placeholder="请输入姓名"></input>
-                <button @click="submit">提交</button>
-                 <button @click="testGame">游戏</button>
+                <h1>登录</h1>
+                <div class="form-item">
+                    <input type="text" v-model="loginInfo.tel" placeholder="请输入手机号" />
+                </div>
+               <div class="form-item">
+                  <input type="text" v-model="loginInfo.name" placeholder="请输入姓名"/>
+               </div>
+               
+              <button class="margin-t-10 am-button sub-btn" @click="submit">提交</button>
             </div>
-        </div>
+        <!-- </div> -->
 
-        <div class="footer">Footer</div>
+        <!-- <div class="footer">Footer</div> -->
 
     </div>
 </template>
@@ -60,20 +65,59 @@ export default {
 </script>
 <style lang="less" scoped>
 .form {
-  margin: 20px;
+  margin: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 50px;
+
+  // border: gray solid 1px;
+  // border-radius: 5px;
+
+  h1 {
+    color: #ff5000;
+    text-align: center;
+  }
+
   input {
-    margin: 20px;
-    padding: 10px;
+    font-size: 18px;
+    margin-top: 18px;
+    padding: 20px;
+    border: 0;
+    outline: none;
+    // border-bottom: gray solid 1px;
+  }
+
+  .form-item {
+    border-bottom: #ff5000 solid 1px;
   }
 }
 
+.margin-t-10 {
+  margin-top: 30px;
+}
+
+.am-button {
+  font-size: 0.42666667rem;
+  width: 100%;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  border-radius: 0.6rem;
+  text-align: center;
+  border: 0;
+}
+
+.sub-btn {
+  background: -webkit-linear-gradient(left, #ff9000, #ff5000) no-repeat;
+  color: #fff;
+  box-shadow: 0 0.08rem 0.16rem #f7c7b1;
+}
+
 .main {
+  margin: 50px 0;
   display: flex;
   flex-direction: column;
-  height: 100vh; // position: absolute;
+  height: 100%; // position: absolute;
   .header {
     height: 70px; // width: 100%;
     background: #ff00ff; // position: fixed;
