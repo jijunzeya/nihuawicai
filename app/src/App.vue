@@ -12,13 +12,13 @@ export default {
 </script>
 
 <style lang="less">
-@import './assets/css/var.less';
-@import './assets/css/common.less';
+@import "./assets/css/var.less";
+@import "./assets/css/common.less";
 html,
 body {
   padding: 0;
   margin: 0;
-  // height: 100%;
+  height: 100%;
   // width: 100%;
 }
 

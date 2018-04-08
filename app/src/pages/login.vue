@@ -1,7 +1,5 @@
 <template>
     <div class="main">
-        <!-- <div class="header">头部</div> -->
-        <!-- <div class="content"> -->
             <div class="form">
                 <h1>登录</h1>
                 <div class="form-item">
@@ -13,14 +11,13 @@
                
               <button class="margin-t-10 am-button sub-btn" @click="submit">提交</button>
             </div>
-        <!-- </div> -->
-
-        <!-- <div class="footer">Footer</div> -->
-
     </div>
 </template>
 <script>
 import Constants from '../common/Constants';
+import VueSocketio from 'vue-socket.io';
+import Vue from 'vue';
+
 export default {
   data () {
     return {
@@ -30,14 +27,14 @@ export default {
       }
     };
   },
-  sockets: {
-    connect: function () {
-      console.log('socket connected');
-    },
-    joinedRoom: function (val) {
-      console.log('@@##joinedRoom from server:' + JSON.stringify(val));
-    }
-  },
+  // sockets: {
+  //   connect: function (val) {
+  //     console.log('socket connected:' + this.$socket.id + ' ' + JSON.stringify(val));
+  //   },
+  //   joinedRoom: function (val) {
+  //     console.log('@@##joinedRoom from server:' + JSON.stringify(val));
+  //   }
+  // },
   methods: {
     testGame () {
       this.$router.push({ name: 'game' });
@@ -47,6 +44,7 @@ export default {
 
       // this.$router.push({ name: 'chatroom' });
       let params = { name: this.loginInfo.name, roomId: this.loginInfo.tel };
+      Vue.use(VueSocketio, 'http://localhost:3000/chat');
       this.$socket.emit(
         'createRoom',
         params,

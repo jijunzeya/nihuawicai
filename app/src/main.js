@@ -10,8 +10,8 @@ Vue.config.productionTip = false;
 // import './assets/css/var.less';
 
 /* eslint-disable no-new */
-import VueSocketio from 'vue-socket.io';
-Vue.use(VueSocketio, 'http://10.68.15.131:3000/chat');
+// import VueSocketio from 'vue-socket.io';
+// Vue.use(VueSocketio, 'http://localhost:3000/chat');
 
 new Vue({
   el: '#app',
