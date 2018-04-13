@@ -44,7 +44,8 @@ export default {
 
       // this.$router.push({ name: 'chatroom' });
       let params = { name: this.loginInfo.name, roomId: this.loginInfo.tel };
-      Vue.use(VueSocketio, 'http://localhost:3000/chat');
+      console.log('@@##socket io ip:' + process.env.SOCKETIO);
+      Vue.use(VueSocketio, process.env.SOCKETIO);
       this.$socket.emit(
         'createRoom',
         params,
@@ -103,6 +104,7 @@ export default {
   border-radius: 0.6rem;
   text-align: center;
   border: 0;
+  // padding: 1rem 1rem;
 }
 
 .sub-btn {

@@ -1,9 +1,23 @@
 <template>
   <div class="canvas-wrap">
-    <canvas :width="width" :height="height" class="canvas" ref="canvas"></canvas>
-    <div>
-      <button>确认</button>
-       <button @click="backDraw()" class="back-btn">回退</button>
+     <mt-header title="你画我猜">
+          <router-link to="/" slot="left">
+             <mt-button icon="back">back</mt-button>
+          </router-link>
+           <mt-button icon="more" slot="right"></mt-button>
+      </mt-header>
+    <div class="content">
+       <div class="left">
+          <canvas :width="width" :height="height" class="canvas" ref="canvas"></canvas>
+          <div class="opera-panel">
+              <opera-panel></opera-panel>
+              <mt-button class="back-btn" size="small" @click="backDraw()">回退</mt-button>
+          </div>
+       </div>
+       <div class="right">
+        <game-chat></game-chat>
+       </div>
+
     </div>
   </div>
 </template>
@@ -12,11 +26,15 @@ import Game from '@/game';
 import SocketMixin from '@/pages/common/socket-mixin';
 export default {
   mixins: [SocketMixin],
+  components: {
+    'game-chat': () => import('@/pages/game/game-chat.vue'),
+    'opera-panel': () => import('@/pages/game/opera-panel.vue')
+  },
   data () {
     return {
       game: null,
-      width: 0,
-      height: 0
+      width: null,
+      height: null
 
     }
   },
@@ -65,16 +83,35 @@ export default {
 .canvas-wrap {
   display: flex;
   flex-direction: column;
-  background: #00ff00;
   height: 100%;
-  .canvas {
-    height: 100%;
-    background: #0000ff;
-    // border: 10px solid #c3c3c3;
-  }
-  .back-btn {
-    background: #ffff00;
-    padding: 1rem;
+
+  .content {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    .left {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      .opera-panel {
+        padding: 8px;
+        border: 1px solid #c3c3c3;
+        display: flex;
+        .back-btn {
+          align-content: flex-end;
+        }
+      }
+      .canvas {
+        flex: 1;
+        // height: 100%;
+        // border: 10px solid #c3c3c3;
+      }
+    }
+    .right {
+      padding: 8px;
+      width: 30%;
+      border: 1px solid #c3c3c3;
+    }
   }
 }
 </style>
