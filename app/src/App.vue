@@ -12,8 +12,8 @@ export default {
 </script>
 
 <style lang="less">
-@import "./assets/css/var.less";
-@import "./assets/css/common.less";
+@import './assets/css/var.less';
+@import './assets/css/common.less';
 html,
 body {
   padding: 0;

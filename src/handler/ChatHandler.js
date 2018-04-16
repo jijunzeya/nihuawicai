@@ -167,7 +167,7 @@ export default class ChatHandler {
     console.log('onUserChatMessage:' + message);
     this._namespace.to(this._user.roomId).emit('serverSendUserChat', {
       nick: this._user.nickName,
-      message: message + ' from 房间' + this._user.roomId
+      message: message
     });
 
 
