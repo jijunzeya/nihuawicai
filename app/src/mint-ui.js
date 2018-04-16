@@ -6,7 +6,8 @@ import {
   Spinner,
   Toast,
   Header,
-  Range
+  Range,
+  Field
 } from 'mint-ui';
 // import Toast from '@/pages/common/ui-utils.js';
 Vue.component(Spinner.name, Spinner);
@@ -20,3 +21,4 @@ Vue.component(Loadmore.name, Loadmore);
 Vue.component(Header.name, Header);
 Vue.component(Toast.name, Toast);
 Vue.component(Range.name, Range);
+Vue.component(Field.name, Field);

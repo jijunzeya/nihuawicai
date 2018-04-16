@@ -3,5 +3,5 @@ var prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  SOCKETIO: '"http://10.68.15.131:3000/chat"'
+  SOCKETIO: '"http://localhost:3000/chat"'
 })

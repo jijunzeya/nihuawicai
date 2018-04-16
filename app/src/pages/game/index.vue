@@ -13,6 +13,12 @@
               <opera-panel></opera-panel>
               <mt-button class="back-btn" size="small" @click="backDraw()">回退</mt-button>
           </div>
+          <div class="input">
+             <input v-model="inputMessage" v-on:keyup.enter="send" placeholder="请输入内容" />
+            
+            <mt-button type="primary" @click="send()" size="small">发送答案</mt-button>
+
+          </div>
        </div>
        <div class="right">
         <game-chat></game-chat>
@@ -32,6 +38,7 @@ export default {
   },
   data () {
     return {
+      inputMessage: null,
       game: null,
       width: null,
       height: null
@@ -80,6 +87,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.input {
+  display: flex;
+  margin: 8px;
+  input {
+    flex: 1;
+    margin-right: 8px;
+  }
+}
 .canvas-wrap {
   display: flex;
   flex-direction: column;
@@ -91,10 +106,10 @@ export default {
     flex-direction: row;
     .left {
       display: flex;
-      flex: 1;
+      flex: 7;
       flex-direction: column;
       .opera-panel {
-        padding: 8px;
+        padding: 16px;
         border: 1px solid #c3c3c3;
         display: flex;
         .back-btn {
@@ -109,7 +124,7 @@ export default {
     }
     .right {
       padding: 8px;
-      width: 30%;
+      flex: 3;
       border: 1px solid #c3c3c3;
     }
   }

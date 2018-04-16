@@ -193,11 +193,7 @@ var ChatHandler = function () {
       console.log('onUserChatMessage:' + message);
       this._namespace.to(this._user.roomId).emit('serverSendUserChat', {
         nick: this._user.nickName,
-<<<<<<< HEAD
-        message: message + ' from 房间' + this._user.roomId
-=======
         message: message
->>>>>>> bff2fb76a9ab94c06eec31ab4f9f57b61ca0561e
       });
 
       // let curRoom = this._rooms[this._user.roomId];

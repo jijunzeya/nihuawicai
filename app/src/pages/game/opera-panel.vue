@@ -1,5 +1,12 @@
 <template>
    <div class="panel-layout">
+     <div>
+
+     <!-- <div>
+       <span>线宽</span>
+      <span>{{lineWidth}}</span>
+
+     </div> -->
      <mt-range
           style="width:80px"
           v-model="lineWidth"
@@ -9,7 +16,8 @@
          <div slot="start">1</div>
          <div slot="end">40</div>
       </mt-range>
-       {{lineWidth}}
+     </div>
+       
    </div>
 </template>
 <script>
