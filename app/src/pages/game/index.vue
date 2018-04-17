@@ -1,28 +1,28 @@
 <template>
   <div class="canvas-wrap">
-     <mt-header title="你画我猜">
-          <router-link to="/" slot="left">
-             <mt-button icon="back">back</mt-button>
-          </router-link>
-           <mt-button icon="more" slot="right"></mt-button>
-      </mt-header>
+    <mt-header title="你画我猜">
+      <router-link to="/" slot="left">
+        <mt-button icon="back">back</mt-button>
+      </router-link>
+      <mt-button icon="more" slot="right"></mt-button>
+    </mt-header>
     <div class="content">
-       <div class="left">
-          <canvas :width="width" :height="height" class="canvas" ref="canvas"></canvas>
-          <div class="opera-panel">
-              <opera-panel></opera-panel>
-              <mt-button class="back-btn" size="small" @click="backDraw()">回退</mt-button>
-          </div>
-          <div class="input">
-             <input v-model="inputMessage" v-on:keyup.enter="send" placeholder="请输入内容" />
-            
-            <mt-button type="primary" @click="send()" size="small">发送答案</mt-button>
+      <div class="left">
+        <canvas :width="width" :height="height" class="canvas" ref="canvas"></canvas>
+        <div class="opera-panel">
+          <opera-panel></opera-panel>
+          <!-- <mt-button class="back-btn" size="small" @click="backDraw()">回退</mt-button> -->
+        </div>
+        <div class="input">
+          <input v-model="inputMessage" v-on:keyup.enter="send" placeholder="请输入内容" />
 
-          </div>
-       </div>
-       <div class="right">
+          <mt-button type="primary" @click="send()" size="small">发送答案</mt-button>
+
+        </div>
+      </div>
+      <div class="right">
         <game-chat></game-chat>
-       </div>
+      </div>
 
     </div>
   </div>
