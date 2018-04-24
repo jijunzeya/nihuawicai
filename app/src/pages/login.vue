@@ -44,8 +44,8 @@ export default {
 
       // this.$router.push({ name: 'chatroom' });
       let params = { name: this.loginInfo.name, roomId: this.loginInfo.tel };
-      console.log('@@##socket io ip:' + process.env.SOCKETIO);
-      Vue.use(VueSocketio, process.env.SOCKETIO);
+      console.log('@@##socket io ip:' + (process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}`));
+      Vue.use(VueSocketio, process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}`);
       this.$socket.emit(
         'createRoom',
         params,

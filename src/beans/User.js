@@ -1,28 +1,31 @@
 class User {
 
-    //私有属性
-    id;
-    //实例属性
-    score;
+  //私有属性
+  id;
+  //实例属性
+  score;
 
-    //昵称
-    nickName;
+  //昵称
+  nickName;
 
-    //所在房间id
-    roomId;
+  //所在房间id
+  roomId;
 
-    constructor(id, nick) {
-        this.id = id;
-        this.nickName = nick;
-    }
+  token;
 
-    getID() {
-        return this.id;
-    }
+  constructor(id, nick, token) {
+    this.id = id;
+    this.nickName = nick;
+    this.token = token;
+  }
 
-    toString() {
-        console.log('User toString:' + User.toString())
-    }
+  getID () {
+    return this.id;
+  }
+
+  toString () {
+    console.log('User toString:' + User.toString())
+  }
 
 
 

@@ -27,7 +27,7 @@ export default class ChatHandler {
   }
 
   initSocket (socket) {
-    console.log('@@##initSocket @@:' + this._socket.handshake.query.name)
+    console.log('@@##initSocket @@:' + socket.handshake.query.token + ' ' + socket.handshake.query.name)
     this._user = new User(socket.id, socket.handshake.query.name);
     this._socket.on('message', this.receiveMessage.bind(this));
     // socket.on('disconnect', this.onDisConnect.bind(this));
@@ -55,7 +55,6 @@ export default class ChatHandler {
     // 校验
     //roomName:房间名称 id 房间roomId
     this._socket.join(data.roomId, () => {
-
       const room = new Room(data.roomId);
       this._user.roomId = data.roomId;
       this._user.nickName = data.name;

@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10,35 +10,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var User = function () {
 
-    //昵称
+  //所在房间id
+
+  //实例属性
+  function User(id, nick, token) {
+    _classCallCheck(this, User);
+
+    this.id = id;
+    this.nickName = nick;
+    this.token = token;
+  }
+
+  //昵称
 
 
-    //私有属性
-    function User(id, nick) {
-        _classCallCheck(this, User);
+  //私有属性
 
-        this.id = id;
-        this.nickName = nick;
+
+  _createClass(User, [{
+    key: 'getID',
+    value: function getID() {
+      return this.id;
     }
+  }, {
+    key: 'toString',
+    value: function toString() {
+      console.log('User toString:' + User.toString());
+    }
+  }]);
 
-    //所在房间id
-
-    //实例属性
-
-
-    _createClass(User, [{
-        key: 'getID',
-        value: function getID() {
-            return this.id;
-        }
-    }, {
-        key: 'toString',
-        value: function toString() {
-            console.log('User toString:' + User.toString());
-        }
-    }]);
-
-    return User;
+  return User;
 }();
 
 User.staticPro = '静态属性User';

@@ -42,7 +42,7 @@ var ChatHandler = function () {
   _createClass(ChatHandler, [{
     key: 'initSocket',
     value: function initSocket(socket) {
-      console.log('@@##initSocket @@:' + this._socket.handshake.query.name);
+      console.log('@@##initSocket @@:' + socket.handshake.query.token + ' ' + socket.handshake.query.name);
       this._user = new _User2.default(socket.id, socket.handshake.query.name);
       this._socket.on('message', this.receiveMessage.bind(this));
       // socket.on('disconnect', this.onDisConnect.bind(this));
@@ -73,7 +73,6 @@ var ChatHandler = function () {
       // 校验
       //roomName:房间名称 id 房间roomId
       this._socket.join(data.roomId, function () {
-
         var room = new _Room2.default(data.roomId);
         _this._user.roomId = data.roomId;
         _this._user.nickName = data.name;
