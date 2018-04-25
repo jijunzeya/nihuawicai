@@ -12,6 +12,10 @@ var _SocketHandler = require('./handler/SocketHandler');
 
 var _SocketHandler2 = _interopRequireDefault(_SocketHandler);
 
+var _HallCenter = require('./game/HallCenter');
+
+var _HallCenter2 = _interopRequireDefault(_HallCenter);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -23,10 +27,11 @@ var port = process.env.PORT || 3000;
 
 app.use(_express2.default['static']('./'));
 
-var sh = new _SocketHandler2.default(server);
-sh.init(function (result) {
-  console.log('@@##socket handler init :' + result);
-});
+// let sh = new SocketHandler(server);
+// sh.init(result => {
+//   console.log('@@##socket handler init :' + result);
+// });
+var hallCenter = new _HallCenter2.default(server);
 
 server.listen(port, function () {
   console.log('[INFO] Listening on *:' + port);

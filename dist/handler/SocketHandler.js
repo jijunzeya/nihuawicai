@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 // import User from './beans/User';
@@ -25,7 +23,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var SocketHandler = function () {
-  function SocketHandler(server) {
+  function SocketHandler(server, onConnection) {
     var _this = this;
 
     _classCallCheck(this, SocketHandler);
@@ -34,7 +32,7 @@ var SocketHandler = function () {
     this.chatHandlers = {};
 
     var io = new _socket2.default(server);
-    var nsp = io.of('/chat');
+    this.nsp = io.of('/chat');
 
     // middleware
     // nsp.use((socket, next) => {
@@ -48,27 +46,63 @@ var SocketHandler = function () {
     // });
 
     // let nsp =io;
-    nsp.on('connection', function (socket) {
-      console.log('@@##nsp connection :' + socket.id + ' ' + _typeof(_this.rooms[0]));
-      var chatHandler = new _ChatHandler2.default(nsp, _this.rooms, socket, function (roomId) {
-        //创建room成功
-        console.log('@@##创建房间成功:' + roomId);
-      }, function (roomId) {
-        // 加入room成功
-        console.log('@@##加入房间成功:' + roomId);
-      });
-      _this.chatHandlers[socket.id] = chatHandler;
-      console.log('@@##connection:' + chatHandler._user.nickName);
-      // console.log('@@##connection:' + this.chatHandlers.keys());
-      socket.on('disconnect', function () {
-        console.log('@@##socket disconnect:' + socket.id);
-        delete _this.chatHandlers[socket.id];
-        // console.log('@@##disconnect:' + JSON.stringify(this.chatHandlers));
-      });
+    this.nsp.on('connection', function (socket) {
+      _this.socket = socket;
+      // let roomId = socket.handshake.query.roomId;
+      // let token = sockect.handshake.query.token;
+      var data = {
+        roomId: socket.handshake.query.roomId,
+        token: socket.handshake.query.token,
+        name: socket.handshake.query.name
+      };
+      onConnection(data);
     });
   }
 
   _createClass(SocketHandler, [{
+    key: 'initListeners',
+    value: function initListeners(listeners) {
+      for (var key in listeners) {
+        this.socket.on(key, listeners[key]);
+      }
+    }
+  }, {
+    key: 'joinRoom',
+    value: function joinRoom(roomId, callback) {
+      if (this.socket) {
+        this.socket.join(roomId, callback);
+      } else {
+        throw new Error('socket is not initial');
+      }
+    }
+
+    //改变房间
+
+  }, {
+    key: 'chanageRoom',
+    value: function chanageRoom(oldRoomId, newRoomId, callback) {}
+  }, {
+    key: 'getNsp',
+    value: function getNsp() {
+      return this.nsp;
+    }
+  }, {
+    key: 'getSocket',
+    value: function getSocket() {
+      return this.socket;
+    }
+  }, {
+    key: 'sendMessageToRoom',
+    value: function sendMessageToRoom(room, event, message) {
+      //发消息到房间还是给人呢
+      this.nsp.to(room).emit(event, message);
+    }
+  }, {
+    key: 'sendMessage',
+    value: function sendMessage(event, message) {
+      this.socket.emit(event, message);
+    }
+  }, {
     key: 'init',
     value: function init(func) {}
   }]);

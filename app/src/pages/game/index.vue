@@ -87,14 +87,6 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.input {
-  display: flex;
-  margin: 8px;
-  input {
-    flex: 1;
-    margin-right: 8px;
-  }
-}
 .canvas-wrap {
   display: flex;
   flex-direction: column;
@@ -109,16 +101,27 @@ export default {
       flex: 7;
       flex-direction: column;
       .opera-panel {
-        padding: 16px;
+        height: 20vh;
+        // padding: 16px;
         border: 1px solid #c3c3c3;
         display: flex;
         .back-btn {
           align-content: flex-end;
         }
       }
+
+      .input {
+        height: 5vh;
+        display: flex;
+        margin: 8px;
+        input {
+          flex: 1;
+          margin-right: 8px;
+        }
+      }
       .canvas {
         flex: 1;
-        // height: 100%;
+        height: 60vh;
         // border: 10px solid #c3c3c3;
       }
     }

@@ -1,8 +1,8 @@
-const Room = require('../beans/Room');
-const RoomHandler = require('../handler/RoomHandler');
-const Game = require('./Game');
+import Room from '../beans/Room';
+import RoomHandler from '../handler/RoomHandler';
+import Game from './Game';
 
-class RoomCenter {
+export default class RoomCenter {
   id;
   room = null;
   roomHandler = null;
@@ -11,13 +11,15 @@ class RoomCenter {
     this.room = room;
     this.id = room.id;
 
-    roomHandler = new RoomHandler(nsp, socket, (roomId) => {
+    this.roomHandler = new RoomHandler(this.id, nsp, socket, (roomId) => {
       //创建room成功
       console.log('@@##创建房间成功:' + roomId);
     }, (roomId) => {
       // 加入room成功
       console.log('@@##加入房间成功:' + roomId);
     });
+
+    this.initGame();
     // // this.chatHandlers[socket.id] = chatHandler;
     // console.log('@@##connection:' + chatHandler._user.nickName);
     // console.log('@@##connection:' + this.chatHandlers.keys());
@@ -26,6 +28,11 @@ class RoomCenter {
   joinUser (user) {
     user.roomId = this.id;
     this.room.join(user);
+  }
+
+  leaveRoom (user) {
+    user.roomId = null;
+    this.room.leave(user);
   }
 
   initGame () {
@@ -37,5 +44,3 @@ class RoomCenter {
 
 
 }
-
-module.exports = RoomCenter;

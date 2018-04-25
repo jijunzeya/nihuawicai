@@ -6,7 +6,7 @@ export default class RoomHandler {
 
   _socket;
 
-  _user;
+  // _user;
 
   _namespace;
 
@@ -15,8 +15,10 @@ export default class RoomHandler {
   joinedRoomCallback;
 
   // _rooms;
+  roomId;
 
-  constructor(nsp, socket, cCallback, jCallback) {
+  constructor(id, nsp, socket, cCallback, jCallback) {
+    this.roomId = id;
     this._namespace = nsp;
     // this._rooms = rooms;
     this._socket = socket;
@@ -28,7 +30,7 @@ export default class RoomHandler {
 
   initSocket (socket) {
     console.log('@@##initSocket @@:' + socket.handshake.query.token + ' ' + socket.handshake.query.name)
-    this._user = new User(socket.id, socket.handshake.query.name);
+    // this._user = new User(socket.id, socket.handshake.query.name);
     this._socket.on('message', this.receiveMessage.bind(this));
     // socket.on('disconnect', this.onDisConnect.bind(this));
     socket.on('userChat', this.onUserChatMessage.bind(this));
@@ -61,9 +63,9 @@ export default class RoomHandler {
   // 接收游戏数据
   onGetPointData (point) {
     if (!this.game) {
-      this.game = new Game(this._rooms[this._user.roomId], (event) => {
+      this.game = new Game((event) => {
         // this._namespace.to(this._user.roomId).emit('gamePointData', p);
-        this.sendMessageToRoom(this._user.roomId, event.name, event.data);
+        this.sendMessageToRoom(this.roomId, event.name, event.data);
       });
     }
     this.game.handleData(point);
@@ -78,8 +80,8 @@ export default class RoomHandler {
 
   onUserChatMessage (message) {
     console.log('onUserChatMessage:' + message);
-    this._namespace.to(this._user.roomId).emit('serverSendUserChat', {
-      nick: this._user.nickName,
+    this._namespace.to(this.roomId).emit('serverSendUserChat', {
+      nick: this._socket.id,
       message: message
     });
 
@@ -107,7 +109,7 @@ export default class RoomHandler {
   }
 
   onDisConnect () {
-    console.log('User ' + this._user.nickName + ' disconneted');
+    console.log('User ' + this._sockect.id + ' disconneted');
   }
 
 }

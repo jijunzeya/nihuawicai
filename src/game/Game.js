@@ -7,7 +7,7 @@ export default class Game {
   callback;
   lines = [];
   constructor(callback) {
-    this.room = room;
+    // this.room = room;
     this.callback = callback;
   }
 

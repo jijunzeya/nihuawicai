@@ -25,6 +25,12 @@ class Room {
     console.log('@@##room ' + this.id + ' has ' + this.users.length);
   }
 
+  leave (user) {
+    if (user.name) {
+      delete this.users[user.name];
+    }
+  }
+
   resetGame () {
 
   }

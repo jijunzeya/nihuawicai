@@ -13,7 +13,7 @@ export default class SocketHandler {
 
   constructor(server, onConnection) {
     let io = new SocketIO(server);
-    nsp = io.of('/chat');
+    this.nsp = io.of('/chat');
 
     // middleware
     // nsp.use((socket, next) => {
@@ -27,7 +27,7 @@ export default class SocketHandler {
     // });
 
     // let nsp =io;
-    nsp.on('connection', socket => {
+    this.nsp.on('connection', socket => {
       this.socket = socket;
       // let roomId = socket.handshake.query.roomId;
       // let token = sockect.handshake.query.token;
@@ -42,8 +42,8 @@ export default class SocketHandler {
   }
 
   initListeners (listeners) {
-    for ([key, value] of listeners) {
-      this.socket.on(key, value);
+    for (let key in listeners) {
+      this.socket.on(key, listeners[key]);
     }
   }
 
@@ -61,7 +61,11 @@ export default class SocketHandler {
   }
 
   getNsp () {
-    return nsp;
+    return this.nsp;
+  }
+
+  getSocket () {
+    return this.socket;
   }
 
   sendMessageToRoom (room, event, message) {
@@ -69,7 +73,7 @@ export default class SocketHandler {
     this.nsp.to(room).emit(event, message);
   }
 
-  sendMeessage (event, message) {
+  sendMessage (event, message) {
     this.socket.emit(event, message);
   }
 

@@ -1,17 +1,17 @@
 <template>
-    <div class="main">
-            <div class="form">
-                <h1>登录</h1>
-                <div class="form-item">
-                    <input type="text" v-model="loginInfo.tel" placeholder="请输入手机号" />
-                </div>
-               <div class="form-item">
-                  <input type="text" v-model="loginInfo.name" placeholder="请输入姓名"/>
-               </div>
-               
-              <button class="margin-t-10 am-button sub-btn" @click="submit">提交</button>
-            </div>
+  <div class="main">
+    <div class="form">
+      <h1>登录</h1>
+      <div class="form-item">
+        <input type="text" v-model="loginInfo.tel" placeholder="请输入手机号" />
+      </div>
+      <div class="form-item">
+        <input type="text" v-model="loginInfo.name" placeholder="请输入姓名" />
+      </div>
+
+      <button class="margin-t-10 am-button sub-btn" @click="submit">提交</button>
     </div>
+  </div>
 </template>
 <script>
 import Constants from '../common/Constants';
@@ -50,7 +50,7 @@ export default {
       // this.$router.push({ name: 'chatroom' });
       let params = { name: this.loginInfo.name, roomId: this.loginInfo.tel };
       console.log('@@##socket io ip:' + (process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}`));
-      Vue.use(VueSocketio, process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}`);
+      Vue.use(VueSocketio, process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}&roomId=${params.roomId}`);
       this.$socket.emit(
         'createRoom',
         params,
