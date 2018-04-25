@@ -39,6 +39,11 @@ export default class ChatHandler {
     socket.on('pointData', this.onGetPointData.bind(this));
 
     socket.on('gameEvent', this.onGameEvent.bind(this));
+    socket.on('connection', this.onConnect.bind(this));
+  }
+
+  onConnect (sockect) {
+    console.log('@@##onConnect:' + (typeof this.rooms[0]));
   }
 
   onCreateRoom (data, fn) {

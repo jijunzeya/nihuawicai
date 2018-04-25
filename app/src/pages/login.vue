@@ -17,7 +17,7 @@
 import Constants from '../common/Constants';
 import VueSocketio from 'vue-socket.io';
 import Vue from 'vue';
-
+import { Toast } from 'mint-ui';
 export default {
   data () {
     return {
@@ -41,6 +41,11 @@ export default {
     },
     submit () {
       console.log('@@##submit:' + JSON.stringify(this.loginInfo));
+
+      if (!this.loginInfo.tel || !this.loginInfo.name) {
+        Toast('请输入帐号和房间号！');
+        return;
+      }
 
       // this.$router.push({ name: 'chatroom' });
       let params = { name: this.loginInfo.name, roomId: this.loginInfo.tel };

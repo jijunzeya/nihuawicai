@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _User = require('../beans/User');
@@ -54,6 +56,12 @@ var ChatHandler = function () {
       socket.on('pointData', this.onGetPointData.bind(this));
 
       socket.on('gameEvent', this.onGameEvent.bind(this));
+      socket.on('connection', this.onConnect.bind(this));
+    }
+  }, {
+    key: 'onConnect',
+    value: function onConnect(sockect) {
+      console.log('@@##onConnect:' + _typeof(this.rooms[0]));
     }
   }, {
     key: 'onCreateRoom',

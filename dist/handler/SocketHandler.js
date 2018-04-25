@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 // import User from './beans/User';
@@ -47,7 +49,7 @@ var SocketHandler = function () {
 
     // let nsp =io;
     nsp.on('connection', function (socket) {
-      console.log('@@##nsp connection :' + socket.id);
+      console.log('@@##nsp connection :' + socket.id + ' ' + _typeof(_this.rooms[0]));
       var chatHandler = new _ChatHandler2.default(nsp, _this.rooms, socket, function (roomId) {
         //创建room成功
         console.log('@@##创建房间成功:' + roomId);

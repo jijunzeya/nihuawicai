@@ -4,7 +4,7 @@ import {
   Button,
   Loadmore,
   Spinner,
-  Toast,
+  // Toast,
   Header,
   Range,
   Field
@@ -19,6 +19,6 @@ Vue.component(Button.name, Button);
 // Vue.component(TabItem.name, TabItem);
 Vue.component(Loadmore.name, Loadmore);
 Vue.component(Header.name, Header);
-Vue.component(Toast.name, Toast);
+// Vue.component(Toast.name, Toast);
 Vue.component(Range.name, Range);
 Vue.component(Field.name, Field);

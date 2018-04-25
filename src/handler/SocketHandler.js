@@ -8,9 +8,12 @@ export default class SocketHandler {
   rooms = {};
   chatHandlers = {};
 
-  constructor(server) {
+  nsp;
+  socket;
+
+  constructor(server, onConnection) {
     let io = new SocketIO(server);
-    let nsp = io.of('/chat');
+    nsp = io.of('/chat');
 
     // middleware
     // nsp.use((socket, next) => {
@@ -25,25 +28,49 @@ export default class SocketHandler {
 
     // let nsp =io;
     nsp.on('connection', socket => {
-      console.log('@@##nsp connection :' + socket.id);
-      let chatHandler = new ChatHandler(nsp, this.rooms, socket, (roomId) => {
-        //创建room成功
-        console.log('@@##创建房间成功:' + roomId);
-      }, (roomId) => {
-        // 加入room成功
-        console.log('@@##加入房间成功:' + roomId);
-      });
-      this.chatHandlers[socket.id] = chatHandler;
-      console.log('@@##connection:' + chatHandler._user.nickName);
-      // console.log('@@##connection:' + this.chatHandlers.keys());
-      socket.on('disconnect', () => {
-        console.log('@@##socket disconnect:' + socket.id);
-        delete this.chatHandlers[socket.id];
-        // console.log('@@##disconnect:' + JSON.stringify(this.chatHandlers));
-      })
-
+      this.socket = socket;
+      // let roomId = socket.handshake.query.roomId;
+      // let token = sockect.handshake.query.token;
+      let data = {
+        roomId: socket.handshake.query.roomId,
+        token: socket.handshake.query.token,
+        name: socket.handshake.query.name
+      }
+      onConnection(data);
     });
 
+  }
+
+  initListeners (listeners) {
+    for ([key, value] of listeners) {
+      this.socket.on(key, value);
+    }
+  }
+
+  joinRoom (roomId, callback) {
+    if (this.socket) {
+      this.socket.join(roomId, callback);
+    } else {
+      throw new Error('socket is not initial');
+    }
+  }
+
+  //改变房间
+  chanageRoom (oldRoomId, newRoomId, callback) {
+
+  }
+
+  getNsp () {
+    return nsp;
+  }
+
+  sendMessageToRoom (room, event, message) {
+    //发消息到房间还是给人呢
+    this.nsp.to(room).emit(event, message);
+  }
+
+  sendMeessage (event, message) {
+    this.socket.emit(event, message);
   }
 
   init (func) {
