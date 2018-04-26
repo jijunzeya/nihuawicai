@@ -47,7 +47,7 @@ export default class Hall {
       } else {
         this.socketHandler.joinRoom(roomId, () => {
           let room = new Room(roomId);
-          let newRoom = new RoomCenter(room);
+          let newRoom = new RoomCenter(room, this.socketHandler.getNsp(), this.socketHandler.getSocket());
           newRoom.joinUser(this.user);
           this.roomCenters[roomId] = newRoom;
         })
@@ -61,21 +61,35 @@ export default class Hall {
 
     socket.on('disconnect', () => {
       console.log('@@##socket disconnect:' + socket.id);
-      this.roomCenters[this.roomId] && delete this.roomCenters[this.roomId].leaveRoom(this.user);
+      this.roomCenters[this.roomId] && this.roomCenters[this.roomId].leaveRoom(this.user);
       // console.log('@@##disconnect:' + JSON.stringify(this.chatHandlers));
     })
 
   }
 
   initListeners () {
-    this.socketHandler.initListeners({
+    let initListeners = {
       'createRoom': this.onCreateRoom.bind(this)
-    })
+    };
+
+    initListeners[Constants.GET_ROOMS] = this.onGetRooms.bind(this);
+
+    this.socketHandler.initListeners(initListeners);
+  }
+
+  onGetRooms (data, fn) {
+    console.log('@@##HallCenter onGetRooms:');
+    let rooms = {};
+    for (let roomCenter in this.roomCenters) {
+      rooms[roomCenter] = this.roomCenters[roomCenter].room;
+    }
+    console.log('@@##HallCenter rooms:' + JSON.stringify(rooms));
+    this.socketHandler.getNsp().emit(Constants.GET_ROOMS, rooms);
+    fn && fn(rooms);
   }
 
   onCreateRoom (data, fn) {
     if (!data || !data.name || !data.roomId) {
-
       return;
     }
     console.log('[CHAT]create room :' + ' ' + JSON.stringify(data));
@@ -134,7 +148,7 @@ export default class Hall {
       this.socketHandler.sendMessage('joinedRoom', { result: '不存在房间号:' + data.roomId, code: -1 });
       return;
     } else {
-      if (curRoom.users.length >= 4) {
+      if (curRoom.room.users.length >= 4) {
         this.socketHandler.sendMessage('joinedRoom', { result: '已满座', code: -1 });
         return;
       }
@@ -144,17 +158,18 @@ export default class Hall {
     if (this.user.roomId == data.roomId) {
       console.log('USER IS ALREADY IN ROOM!')
 
+      fn && fn(data.roomId);
       // 返回到房间页
     } else {
       if (this.user.roomId) {
         //如果不一样，则先将之前的退出，删掉，再进入新的
-        this.socket.leave(this.user.roomId, () => {
+        this.socketHandler.getSocket().leave(this.user.roomId, () => {
           console.log('@@##' + this._user.nickName + ' leave ' + this._user.roomId);
           this.roomCenters[this.user.roomId].leaveRoom(this.user);
         })
       }
 
-      this.socket.join(data.roomId, () => {
+      this.socketHandler.getSocket().join(data.roomId, () => {
         console.log('join rooms:' + JSON.stringify(curRoom.id) + ' ' + JSON.stringify(this._rooms));
         curRoom.joinRoom(this.user);
         //   console.log('@@##joined room info :' + JSON.stringify(curRoom.users));
@@ -171,7 +186,12 @@ export default class Hall {
         // this._namespace.emit(Constants.GET_ROOMS, this._rooms);
 
         this.socketHandler.sendMessage('joinedRoom', { code: 0, roomId: data.roomId })
-        this.socketHandler.getNsp().emit(Constants.GET_ROOMS, this.roomCenters);
+        let rooms = {};
+        for (let roomCenter in this.roomCenters) {
+          rooms[roomCenter] = this.roomCenters[roomCenter].room;
+        }
+        console.log('@@##HallCenter rooms:' + JSON.stringify(rooms));
+        this.socketHandler.getNsp().emit(Constants.GET_ROOMS, rooms);
 
         fn && fn(data.roomId);
       });

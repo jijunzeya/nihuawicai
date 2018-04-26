@@ -51,23 +51,23 @@ var ChatHandler = function () {
       socket.on('userChat', this.onUserChatMessage.bind(this));
       // socket.on('createRoom', this.onCreateRoom.bind(this));
       // socket.on('joinRoom', this.onJoinRoom.bind(this));
-      socket.on(_Constants2.default.GET_ROOMS, this.onGetRooms.bind(this));
+      // socket.on(Constants.GET_ROOMS, this.onGetRooms.bind(this));
 
-      socket.on('pointData', this.onGetPointData.bind(this));
+      // socket.on('pointData', this.onGetPointData.bind(this));
 
-      socket.on('gameEvent', this.onGameEvent.bind(this));
-      socket.on('connection', this.onConnect.bind(this));
+      // socket.on('gameEvent', this.onGameEvent.bind(this));
+      // socket.on('connection', this.onConnect.bind(this));
     }
   }, {
     key: 'onConnect',
     value: function onConnect(sockect) {
       console.log('@@##onConnect:' + _typeof(this.rooms[0]));
     }
-  }, {
-    key: 'onGetRooms',
-    value: function onGetRooms(data, fn) {
-      fn && fn(this._rooms);
-    }
+
+    // onGetRooms (data, fn) {
+    // fn && fn(this._rooms);
+    // }
+
   }, {
     key: 'receiveMessage',
     value: function receiveMessage(message) {

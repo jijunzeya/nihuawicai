@@ -30,45 +30,25 @@ export default class ChatHandler {
     socket.on('userChat', this.onUserChatMessage.bind(this));
     // socket.on('createRoom', this.onCreateRoom.bind(this));
     // socket.on('joinRoom', this.onJoinRoom.bind(this));
-    socket.on(Constants.GET_ROOMS, this.onGetRooms.bind(this));
+    // socket.on(Constants.GET_ROOMS, this.onGetRooms.bind(this));
 
-    socket.on('pointData', this.onGetPointData.bind(this));
+    // socket.on('pointData', this.onGetPointData.bind(this));
 
-    socket.on('gameEvent', this.onGameEvent.bind(this));
-    socket.on('connection', this.onConnect.bind(this));
+    // socket.on('gameEvent', this.onGameEvent.bind(this));
+    // socket.on('connection', this.onConnect.bind(this));
   }
 
   onConnect (sockect) {
     console.log('@@##onConnect:' + (typeof this.rooms[0]));
   }
 
-  onGetRooms (data, fn) {
-    fn && fn(this._rooms);
-  }
+  // onGetRooms (data, fn) {
+  // fn && fn(this._rooms);
+  // }
 
   receiveMessage (message) {
     console.log('chat receive message:' + message);
     // 然后呢 =
-  }
-
-
-
-  // 接收游戏数据
-  onGetPointData (point) {
-    if (!this.game) {
-      this.game = new Game((event) => {
-        // this._namespace.to(this._user.roomId).emit('gamePointData', p);
-        this.sendMessageToRoom(this.roomId, event.name, event.data);
-      });
-    }
-    this.game.handleData(point);
-
-  }
-
-  onGameEvent (event) {
-    if (event && event.action) {
-      this.game && this.game.handleGameEvent(event);
-    }
   }
 
   onUserChatMessage (message) {

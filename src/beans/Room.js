@@ -18,8 +18,8 @@ class Room {
 
   //房间加多一个人
   join (user) {
-    if (user.name) {
-      this.users[user.name] = user;
+    if (user.nickName) {
+      this.users[user.nickName] = user;
     }
 
     console.log('@@##room ' + this.id + ' has ' + this.users.length);

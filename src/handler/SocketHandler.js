@@ -38,7 +38,6 @@ export default class SocketHandler {
       }
       onConnection(data);
     });
-
   }
 
   initListeners (listeners) {

@@ -74,7 +74,9 @@ export default {
   },
   mounted () {
     let canvas = this.$refs.canvas;
-    this.game = new Game(canvas, this.$socket);
+    this.game = new Game(canvas, this.$socket, () => {
+      this.$router.push({ name: 'login' });
+    });
     var bbox = canvas.getBoundingClientRect();
     console.log('@@##mounted:' + bbox.width + ' ' + bbox.height);
     this.width = bbox.width;

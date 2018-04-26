@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted () {
-    console.log('@@##mounted()');
+    console.log('@@##rooms mounted()');
     this.$socket && this.$socket.emit(Constants.GET_ROOMS, {}, result => {
       console.log('@@##get rooms:' + result);
       if (result) {

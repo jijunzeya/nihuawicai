@@ -29,8 +29,8 @@ var Room = function () {
   _createClass(Room, [{
     key: 'join',
     value: function join(user) {
-      if (user.name) {
-        this.users[user.name] = user;
+      if (user.nickName) {
+        this.users[user.nickName] = user;
       }
 
       console.log('@@##room ' + this.id + ' has ' + this.users.length);
