@@ -13,7 +13,7 @@ class Game {
     this.lines = [];
     this.line = null;
     this.touch = new Touch(canvas, point => {
-      console.log('@@##touch result :' + JSON.stringify(point));
+      // console.error('@@##touch result :' + JSON.stringify(point));
       // if (point && point.type === 'start' && !this.line) {
       //     this.line = new Line(point.id);
       //     this.line.addPoint(point);
@@ -27,10 +27,12 @@ class Game {
       //     console.log('@@##lines end:' + JSON.stringify(this.lines));
       // }
       // this.draw.draw(point);
-      if (this.socket) {
-        this.socket.emit('pointData', point);
-      } else {
+      console.log('@@##game index this.socket:' + this.socket);
+      if (!this.socket) {
+        console.error('socket is not defined!');
         callback && callback();
+      } else {
+        this.socket.emit('pointData', point);
       }
     })
   }

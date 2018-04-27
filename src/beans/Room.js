@@ -26,8 +26,8 @@ class Room {
   }
 
   leave (user) {
-    if (user.name) {
-      delete this.users[user.name];
+    if (user.nickName) {
+      delete this.users[user.nickName];
     }
   }
 

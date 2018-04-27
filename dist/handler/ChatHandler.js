@@ -48,7 +48,7 @@ var ChatHandler = function () {
       // this._user = new User(socket.id, socket.handshake.query.name);
       this._socket.on('message', this.receiveMessage.bind(this));
       // socket.on('disconnect', this.onDisConnect.bind(this));
-      socket.on('userChat', this.onUserChatMessage.bind(this));
+      // socket.on('userChat', this.onUserChatMessage.bind(this));
       // socket.on('createRoom', this.onCreateRoom.bind(this));
       // socket.on('joinRoom', this.onJoinRoom.bind(this));
       // socket.on(Constants.GET_ROOMS, this.onGetRooms.bind(this));
@@ -73,29 +73,6 @@ var ChatHandler = function () {
     value: function receiveMessage(message) {
       console.log('chat receive message:' + message);
       // 然后呢 =
-    }
-
-    // 接收游戏数据
-
-  }, {
-    key: 'onGetPointData',
-    value: function onGetPointData(point) {
-      var _this = this;
-
-      if (!this.game) {
-        this.game = new _Game2.default(function (event) {
-          // this._namespace.to(this._user.roomId).emit('gamePointData', p);
-          _this.sendMessageToRoom(_this.roomId, event.name, event.data);
-        });
-      }
-      this.game.handleData(point);
-    }
-  }, {
-    key: 'onGameEvent',
-    value: function onGameEvent(event) {
-      if (event && event.action) {
-        this.game && this.game.handleGameEvent(event);
-      }
     }
   }, {
     key: 'onUserChatMessage',

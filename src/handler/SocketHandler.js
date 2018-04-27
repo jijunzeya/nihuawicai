@@ -9,7 +9,7 @@ export default class SocketHandler {
   chatHandlers = {};
 
   nsp;
-  socket;
+  sockets = {};
 
   constructor(server, onConnection) {
     let io = new SocketIO(server);
@@ -28,7 +28,9 @@ export default class SocketHandler {
 
     // let nsp =io;
     this.nsp.on('connection', socket => {
-      this.socket = socket;
+
+      this.sockets[socket.id] = socket;
+
       // let roomId = socket.handshake.query.roomId;
       // let token = sockect.handshake.query.token;
       let data = {
@@ -40,9 +42,9 @@ export default class SocketHandler {
     });
   }
 
-  initListeners (listeners) {
+  initListeners (socketId, listeners) {
     for (let key in listeners) {
-      this.socket.on(key, listeners[key]);
+      this.sockets[socketId].on(key, listeners[key]);
     }
   }
 

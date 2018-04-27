@@ -70,10 +70,10 @@ export default {
       console.log('@@##回退');
       this.game.backDraw();
     }
-
   },
   mounted () {
     let canvas = this.$refs.canvas;
+    console.log('@@##game index :' + this.$socket);
     this.game = new Game(canvas, this.$socket, () => {
       this.$router.push({ name: 'login' });
     });

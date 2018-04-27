@@ -155,47 +155,49 @@ export default class Hall {
     }
 
     // 如果当前用户的ROOMID与传入的一致，说明已在房间了
-    if (this.user.roomId == data.roomId) {
-      console.log('USER IS ALREADY IN ROOM!')
+    // if (this.user.roomId == data.roomId) {
+    //   console.log('USER IS ALREADY IN ROOM!')
 
-      fn && fn(data.roomId);
-      // 返回到房间页
-    } else {
-      if (this.user.roomId) {
-        //如果不一样，则先将之前的退出，删掉，再进入新的
-        this.socketHandler.getSocket().leave(this.user.roomId, () => {
-          console.log('@@##' + this._user.nickName + ' leave ' + this._user.roomId);
-          this.roomCenters[this.user.roomId].leaveRoom(this.user);
-        })
-      }
+    //   fn && fn(data.roomId);
+    //   // 返回到房间页
+    // } else {
+    if (this.user.roomId) {
+      //如果不一样，则先将之前的退出，删掉，再进入新的
+      this.socketHandler.getSocket().leave(this.user.roomId, () => {
+        console.log('@@##' + this.user.nickName + ' leave ' + this.user.roomId);
+        this.roomCenters[this.user.roomId].leaveRoom(this.user);
 
-      this.socketHandler.getSocket().join(data.roomId, () => {
-        console.log('join rooms:' + JSON.stringify(curRoom.id) + ' ' + JSON.stringify(this._rooms));
-        curRoom.joinRoom(this.user);
-        //   console.log('@@##joined room info :' + JSON.stringify(curRoom.users));
-        this.socketHandler.getNsp().to(curRoom.id).emit('serverSendUserChat', {
-          nick: this._user.nickName,
-          message: '我在' + data.roomId
+        this.socketHandler.getSocket().join(data.roomId, () => {
+          console.log('join rooms:' + JSON.stringify(curRoom.id) + ' ' + JSON.stringify(this.rooms));
+          curRoom.joinUser(this.user);
+          //   console.log('@@##joined room info :' + JSON.stringify(curRoom.users));
+          this.socketHandler.getNsp().to(curRoom.id).emit('serverSendUserChat', {
+            nick: this.user.nickName,
+            message: '我在' + data.roomId
+          });
+
+
+          // this.joinedRoomCallback(data.roomId);
+          // this._socket.emit('joinedRoom', { code: 0, roomId: data.roomId });
+          // // 返回房间数
+          // // 测试发给所有
+          // this._namespace.emit(Constants.GET_ROOMS, this._rooms);
+
+          this.socketHandler.sendMessage('joinedRoom', { code: 0, roomId: data.roomId })
+          let rooms = {};
+          for (let roomCenter in this.roomCenters) {
+            rooms[roomCenter] = this.roomCenters[roomCenter].room;
+          }
+          console.log('@@##HallCenter rooms:' + JSON.stringify(rooms));
+          this.socketHandler.getNsp().emit(Constants.GET_ROOMS, rooms);
+
+          fn && fn(data.roomId);
         });
-
-
-        // this.joinedRoomCallback(data.roomId);
-        // this._socket.emit('joinedRoom', { code: 0, roomId: data.roomId });
-        // // 返回房间数
-        // // 测试发给所有
-        // this._namespace.emit(Constants.GET_ROOMS, this._rooms);
-
-        this.socketHandler.sendMessage('joinedRoom', { code: 0, roomId: data.roomId })
-        let rooms = {};
-        for (let roomCenter in this.roomCenters) {
-          rooms[roomCenter] = this.roomCenters[roomCenter].room;
-        }
-        console.log('@@##HallCenter rooms:' + JSON.stringify(rooms));
-        this.socketHandler.getNsp().emit(Constants.GET_ROOMS, rooms);
-
-        fn && fn(data.roomId);
-      });
+      })
     }
+
+
+    // }
 
   }
 

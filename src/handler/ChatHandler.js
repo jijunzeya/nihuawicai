@@ -27,7 +27,7 @@ export default class ChatHandler {
     // this._user = new User(socket.id, socket.handshake.query.name);
     this._socket.on('message', this.receiveMessage.bind(this));
     // socket.on('disconnect', this.onDisConnect.bind(this));
-    socket.on('userChat', this.onUserChatMessage.bind(this));
+    // socket.on('userChat', this.onUserChatMessage.bind(this));
     // socket.on('createRoom', this.onCreateRoom.bind(this));
     // socket.on('joinRoom', this.onJoinRoom.bind(this));
     // socket.on(Constants.GET_ROOMS, this.onGetRooms.bind(this));

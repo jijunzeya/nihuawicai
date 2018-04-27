@@ -13,6 +13,8 @@ class User {
 
   token;
 
+  socket;
+
   constructor(id, nick, token) {
     this.id = id;
     this.nickName = nick;
