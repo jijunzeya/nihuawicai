@@ -9,6 +9,8 @@ export default class Game {
   constructor(callback) {
     // this.room = room;
     this.callback = callback;
+    this.handleData.bind(this);
+    this.handleGameEvent.bind(this);
   }
 
   handleData (point) {

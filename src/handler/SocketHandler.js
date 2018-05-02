@@ -9,12 +9,12 @@ export default class SocketHandler {
   chatHandlers = {};
 
   nsp;
-  sockets = {};
+  // sockets = {};
 
   constructor(server, onConnection) {
     let io = new SocketIO(server);
     this.nsp = io.of('/chat');
-
+    this.nsp.sockets = {};
     // middleware
     // nsp.use((socket, next) => {
     //   let token = socket.handshake.query.token;
@@ -29,11 +29,12 @@ export default class SocketHandler {
     // let nsp =io;
     this.nsp.on('connection', socket => {
 
-      this.sockets[socket.id] = socket;
+      this.nsp.sockets[socket.id] = socket;
 
       // let roomId = socket.handshake.query.roomId;
       // let token = sockect.handshake.query.token;
       let data = {
+        socketId: socket.id,
         roomId: socket.handshake.query.roomId,
         token: socket.handshake.query.token,
         name: socket.handshake.query.name
@@ -44,13 +45,20 @@ export default class SocketHandler {
 
   initListeners (socketId, listeners) {
     for (let key in listeners) {
-      this.sockets[socketId].on(key, listeners[key]);
+      this.nsp.sockets[socketId].on(key, (data, fn) => {
+        listeners[key](data, fn, socketId);
+      });
     }
   }
 
-  joinRoom (roomId, callback) {
-    if (this.socket) {
-      this.socket.join(roomId, callback);
+  handler () {
+
+  }
+
+  joinRoom (socketId, roomId, callback) {
+    if (this.nsp.sockets[socketId]) {
+
+      this.nsp.sockets[socketId].join(roomId, callback);
     } else {
       throw new Error('socket is not initial');
     }
@@ -65,8 +73,8 @@ export default class SocketHandler {
     return this.nsp;
   }
 
-  getSocket () {
-    return this.socket;
+  getSocket (socketId) {
+    return this.nsp.sockets[socketId];
   }
 
   sendMessageToRoom (room, event, message) {
@@ -74,8 +82,8 @@ export default class SocketHandler {
     this.nsp.to(room).emit(event, message);
   }
 
-  sendMessage (event, message) {
-    this.socket.emit(event, message);
+  sendMessage (socketId, event, message) {
+    this.nsp.sockets[socketId].emit(event, message);
   }
 
   init (func) {

@@ -10,22 +10,33 @@ export default class RoomHandler {
 
   _namespace;
 
-  createRoomCallback;
+  // createRoomCallback;
 
-  joinedRoomCallback;
+  // joinedRoomCallback;
+
+  handleGameEvent;
 
   // _rooms;
   roomId;
 
-  constructor(id, nsp, socket, cCallback, jCallback) {
+  constructor(id, nsp, socket, handleGameData, handleGameEvent) {
     this.roomId = id;
     this._namespace = nsp;
     // this._rooms = rooms;
     this._socket = socket;
-    this.createRoomCallback = cCallback;
-    this.joinedRoomCallback = jCallback;
+    // this.createRoomCallback = cCallback;
+    // this.joinedRoomCallback = jCallback;
+    this.handleGameEvent = handleGameEvent;
+    this.handleGameData = handleGameData;
 
     this.initSocket(this._socket);
+
+  }
+
+  resetSocket (id, socket) {
+    this.roomId = id;
+    this._socket = socket;
+    this.initSocket(socket);
   }
 
   initSocket (socket) {
@@ -45,6 +56,8 @@ export default class RoomHandler {
     socket.on('connection', this.onConnect.bind(this));
   }
 
+  // handleGame(game)
+
   onConnect (sockect) {
     console.log('@@##onConnect:' + (typeof this.rooms[0]));
   }
@@ -58,23 +71,24 @@ export default class RoomHandler {
     // 然后呢 =
   }
 
-
-
   // 接收游戏数据
   onGetPointData (point) {
-    if (!this.game) {
-      this.game = new Game((event) => {
-        // this._namespace.to(this._user.roomId).emit('gamePointData', p);
-        this.sendMessageToRoom(this.roomId, event.name, event.data);
-      });
-    }
-    this.game.handleData(point);
+    // if (!this.game) {
+    //   this.game = new Game((event) => {
+    //     // this._namespace.to(this._user.roomId).emit('gamePointData', p);
+    //     this.sendMessageToRoom(this.roomId, event.name, event.data);
+    //   });
+    // }
+    // this.game.handleData(point);
+    console.log('@@##onGetPointData:' + this._socket.id + ' ' + JSON.stringify(point));
+    this.handleGameData(point);
 
   }
 
   onGameEvent (event) {
     if (event && event.action) {
-      this.game && this.game.handleGameEvent(event);
+      // this.game && this.game.handleGameEvent(event);
+      this.handleGameEvent && this.handleGameEvent(point);
     }
   }
 

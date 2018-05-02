@@ -30,6 +30,8 @@ var Game = function () {
 
     // this.room = room;
     this.callback = callback;
+    this.handleData.bind(this);
+    this.handleGameEvent.bind(this);
   }
 
   _createClass(Game, [{

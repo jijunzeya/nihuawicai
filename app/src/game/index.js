@@ -27,7 +27,7 @@ class Game {
       //     console.log('@@##lines end:' + JSON.stringify(this.lines));
       // }
       // this.draw.draw(point);
-      console.log('@@##game index this.socket:' + this.socket);
+      console.log('@@##game index this.socket:' + JSON.stringify(point));
       if (!this.socket) {
         console.error('socket is not defined!');
         callback && callback();

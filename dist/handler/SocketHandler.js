@@ -23,6 +23,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var SocketHandler = function () {
+  // sockets = {};
+
   function SocketHandler(server, onConnection) {
     var _this = this;
 
@@ -33,7 +35,7 @@ var SocketHandler = function () {
 
     var io = new _socket2.default(server);
     this.nsp = io.of('/chat');
-
+    this.nsp.sockets = {};
     // middleware
     // nsp.use((socket, next) => {
     //   let token = socket.handshake.query.token;
@@ -47,10 +49,13 @@ var SocketHandler = function () {
 
     // let nsp =io;
     this.nsp.on('connection', function (socket) {
-      _this.socket = socket;
+
+      _this.nsp.sockets[socket.id] = socket;
+
       // let roomId = socket.handshake.query.roomId;
       // let token = sockect.handshake.query.token;
       var data = {
+        socketId: socket.id,
         roomId: socket.handshake.query.roomId,
         token: socket.handshake.query.token,
         name: socket.handshake.query.name
@@ -61,16 +66,28 @@ var SocketHandler = function () {
 
   _createClass(SocketHandler, [{
     key: 'initListeners',
-    value: function initListeners(listeners) {
+    value: function initListeners(socketId, listeners) {
+      var _this2 = this;
+
+      var _loop = function _loop(key) {
+        _this2.nsp.sockets[socketId].on(key, function (data, fn) {
+          listeners[key](data, fn, socketId);
+        });
+      };
+
       for (var key in listeners) {
-        this.socket.on(key, listeners[key]);
+        _loop(key);
       }
     }
   }, {
+    key: 'handler',
+    value: function handler() {}
+  }, {
     key: 'joinRoom',
-    value: function joinRoom(roomId, callback) {
-      if (this.socket) {
-        this.socket.join(roomId, callback);
+    value: function joinRoom(socketId, roomId, callback) {
+      if (this.nsp.sockets[socketId]) {
+
+        this.nsp.sockets[socketId].join(roomId, callback);
       } else {
         throw new Error('socket is not initial');
       }
@@ -88,8 +105,8 @@ var SocketHandler = function () {
     }
   }, {
     key: 'getSocket',
-    value: function getSocket() {
-      return this.socket;
+    value: function getSocket(socketId) {
+      return this.nsp.sockets[socketId];
     }
   }, {
     key: 'sendMessageToRoom',
@@ -99,8 +116,8 @@ var SocketHandler = function () {
     }
   }, {
     key: 'sendMessage',
-    value: function sendMessage(event, message) {
-      this.socket.emit(event, message);
+    value: function sendMessage(socketId, event, message) {
+      this.nsp.sockets[socketId].emit(event, message);
     }
   }, {
     key: 'init',

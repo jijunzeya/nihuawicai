@@ -30,17 +30,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var RoomHandler = function () {
 
-  // _user;
+  // createRoomCallback;
 
-  function RoomHandler(id, nsp, socket, cCallback, jCallback) {
+  // joinedRoomCallback;
+
+  function RoomHandler(id, nsp, socket, handleGameData, handleGameEvent) {
     _classCallCheck(this, RoomHandler);
 
     this.roomId = id;
     this._namespace = nsp;
     // this._rooms = rooms;
     this._socket = socket;
-    this.createRoomCallback = cCallback;
-    this.joinedRoomCallback = jCallback;
+    // this.createRoomCallback = cCallback;
+    // this.joinedRoomCallback = jCallback;
+    this.handleGameEvent = handleGameEvent;
+    this.handleGameData = handleGameData;
 
     this.initSocket(this._socket);
   }
@@ -48,7 +52,16 @@ var RoomHandler = function () {
   // _rooms;
 
 
+  // _user;
+
   _createClass(RoomHandler, [{
+    key: 'resetSocket',
+    value: function resetSocket(id, socket) {
+      this.roomId = id;
+      this._socket = socket;
+      this.initSocket(socket);
+    }
+  }, {
     key: 'initSocket',
     value: function initSocket(socket) {
       console.log('@@##initSocket @@:' + socket.handshake.query.token + ' ' + socket.handshake.query.name);
@@ -66,6 +79,9 @@ var RoomHandler = function () {
 
       socket.on('connection', this.onConnect.bind(this));
     }
+
+    // handleGame(game)
+
   }, {
     key: 'onConnect',
     value: function onConnect(sockect) {
@@ -88,21 +104,22 @@ var RoomHandler = function () {
   }, {
     key: 'onGetPointData',
     value: function onGetPointData(point) {
-      var _this = this;
-
-      if (!this.game) {
-        this.game = new _Game2.default(function (event) {
-          // this._namespace.to(this._user.roomId).emit('gamePointData', p);
-          _this.sendMessageToRoom(_this.roomId, event.name, event.data);
-        });
-      }
-      this.game.handleData(point);
+      // if (!this.game) {
+      //   this.game = new Game((event) => {
+      //     // this._namespace.to(this._user.roomId).emit('gamePointData', p);
+      //     this.sendMessageToRoom(this.roomId, event.name, event.data);
+      //   });
+      // }
+      // this.game.handleData(point);
+      console.log('@@##onGetPointData:' + this._socket.id + ' ' + JSON.stringify(point));
+      this.handleGameData(point);
     }
   }, {
     key: 'onGameEvent',
     value: function onGameEvent(event) {
       if (event && event.action) {
-        this.game && this.game.handleGameEvent(event);
+        // this.game && this.game.handleGameEvent(event);
+        this.handleGameEvent && this.handleGameEvent(point);
       }
     }
   }, {
