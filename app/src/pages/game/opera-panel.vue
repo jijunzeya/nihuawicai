@@ -23,6 +23,11 @@ export default {
     return {
       lineWidth: 2
     }
+  },
+  methods: {
+    backDraw () {
+
+    }
   }
 }
 </script>
