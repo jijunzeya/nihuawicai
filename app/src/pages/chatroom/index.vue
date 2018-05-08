@@ -1,27 +1,28 @@
 <template>
-    <div class="index-layout">
-        <mt-header title="聊天大厅">
-          <router-link to="/" slot="left">
-             <mt-button icon="back">back</mt-button>
-          </router-link>
-           <mt-button icon="more" slot="right"></mt-button>
-       </mt-header>
-       <div class="main">
-        <div class="left">
-            <messages></messages>
+  <div class="index-layout">
+    <mt-header title="聊天大厅">
+      <!-- <router-link to="/"> -->
+      <mt-button slot="left" icon="back" @click="onBack">back</mt-button>
+      <!-- </router-link> -->
+      <mt-button icon="more" slot="right"></mt-button>
+    </mt-header>
+    <div class="main">
+      <div class="left">
+        <messages></messages>
+      </div>
+      <div class="right">
+        <div class="up">
+          <rooms @selectRoom="selectRoom"></rooms>
         </div>
-        <div class="right">
-            <div class="up">
-                <rooms @selectRoom="selectRoom"></rooms>
-            </div>
-            <div class="down">
-                <people-online :people="users" :roomId="roomId"></people-online>
-            </div>
+        <div class="down">
+          <people-online :people="users" :roomId="roomId"></people-online>
         </div>
-       </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import { MessageBox } from 'mint-ui';
 export default {
   components: {
     'messages': () => import('./messages.vue'),
@@ -44,6 +45,13 @@ export default {
     }
   },
   methods: {
+    onBack () {
+      MessageBox.confirm('确定退出大厅?').then(action => {
+        console.log('@@##message box :' + action);
+      }, cancel => {
+        console.log('@@##message box :' + cancel);
+      });
+    },
     selectRoom (val) {
       this.users = val.users;
       this.roomId = val.roomId;

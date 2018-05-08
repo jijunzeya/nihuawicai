@@ -40,7 +40,7 @@ export default class RoomCenter {
 
 
   joinUser (user) {
-    if (user.roomId == this.id) {
+    if (user.roomId && user.roomId == this.id) {
       return;
     }
     user.roomId = this.id;
@@ -60,7 +60,9 @@ export default class RoomCenter {
   }
 
   leaveRoom (user) {
-    // user.roomId = null;
+    user.roomId = null;
+    user.roomHandler.removeAllListener();
+    user.roomHandler = null;
     this.room.leave(user);
   }
 

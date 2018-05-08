@@ -33,6 +33,11 @@ export default class RoomHandler {
 
   }
 
+  removeAllListener () {
+    console.log(`@@##removeAllListeners ${this._socket.id}`);
+    this._socket.removeAllListeners(['message', 'userChat', 'pointData', 'gameEvent']);
+  }
+
   resetSocket (id, socket) {
     this.roomId = id;
     this._socket = socket;
@@ -52,14 +57,6 @@ export default class RoomHandler {
 
     socket.on('pointData', this.onGetPointData.bind(this));
     socket.on('gameEvent', this.onGameEvent.bind(this));
-
-    socket.on('connection', this.onConnect.bind(this));
-  }
-
-  // handleGame(game)
-
-  onConnect (sockect) {
-    console.log('@@##onConnect:' + (typeof this.rooms[0]));
   }
 
   onGetRooms (data, fn) {
@@ -122,8 +119,9 @@ export default class RoomHandler {
     this._namespace.to(room).emit(event, message);
   }
 
-  onDisConnect () {
+  disConnect () {
     console.log('User ' + this._sockect.id + ' disconneted');
+    // this._socket.disConnect();
   }
 
 }
