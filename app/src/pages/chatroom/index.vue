@@ -48,6 +48,7 @@ export default {
     onBack () {
       MessageBox.confirm('确定退出大厅?').then(action => {
         console.log('@@##message box :' + action);
+        this.$socket.close();
       }, cancel => {
         console.log('@@##message box :' + cancel);
       });

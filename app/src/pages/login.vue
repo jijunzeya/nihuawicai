@@ -3,7 +3,7 @@
     <div class="form">
       <h1>登录</h1>
       <div class="form-item">
-        <input type="text" v-model="loginInfo.tel" placeholder="请输入手机号" />
+        <input type="text" v-model="loginInfo.tel" placeholder="请输入房间号(没有测自动创建)" />
       </div>
       <div class="form-item">
         <input type="text" v-model="loginInfo.name" placeholder="请输入姓名" />
@@ -51,6 +51,9 @@ export default {
       let params = { name: this.loginInfo.name, roomId: this.loginInfo.tel };
       console.log('@@##socket io ip:' + (process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}`));
       Vue.use(VueSocketio, process.env.SOCKETIO + `?token=${params.roomId + params.name}&name=${params.name}&roomId=${params.roomId}`);
+      if (!this.$socket.connected && this.$socket.disconnected) {
+        this.$socket.open();
+      }
       this.$socket.emit(
         'createRoom',
         params,
@@ -69,7 +72,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .form {
-  margin: 0 20px;
+  // margin: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,6 +87,7 @@ export default {
   }
 
   input {
+    width: 100%;
     font-size: 18px;
     margin-top: 18px;
     padding: 20px;
@@ -119,7 +123,7 @@ export default {
 }
 
 .main {
-  margin: 50px 0;
+  // margin: 50px 0;
   display: flex;
   flex-direction: column;
   height: 100%; // position: absolute;

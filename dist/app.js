@@ -16,7 +16,7 @@ var _HallCenter = require('./game/HallCenter');
 
 var _HallCenter2 = _interopRequireDefault(_HallCenter);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault (obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
 var server = _http2.default.Server(app);
@@ -25,7 +25,7 @@ var port = process.env.PORT || 3000;
 
 // console.log('@@##the dirname is :' + __dirname);
 
-app.use(_express2.default['static']('./'));
+app.use(_express2.default['static']('./app/'));
 
 // let sh = new SocketHandler(server);
 // sh.init(result => {

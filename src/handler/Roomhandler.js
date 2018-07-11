@@ -19,8 +19,11 @@ export default class RoomHandler {
   // _rooms;
   roomId;
 
-  constructor(id, nsp, socket, handleGameData, handleGameEvent) {
+  nickName;
+
+  constructor(id, nickName, nsp, socket, handleGameData, handleGameEvent) {
     this.roomId = id;
+    this.nickName = nickName;
     this._namespace = nsp;
     // this._rooms = rooms;
     this._socket = socket;
@@ -92,7 +95,7 @@ export default class RoomHandler {
   onUserChatMessage (message) {
     console.log('onUserChatMessage:' + message);
     this._namespace.to(this.roomId).emit('serverSendUserChat', {
-      nick: this._socket.id,
+      nick: this.nickName,
       message: message
     });
 
@@ -120,7 +123,7 @@ export default class RoomHandler {
   }
 
   disConnect () {
-    console.log('User ' + this._sockect.id + ' disconneted');
+    console.log('User ' + this.nickName + ' disconneted');
     // this._socket.disConnect();
   }
 

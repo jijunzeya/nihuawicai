@@ -38,14 +38,13 @@ export default class RoomCenter {
     this.game.handleGameEvent(event);
   }
 
-
   joinUser (user) {
     if (user.roomId && user.roomId == this.id) {
       return;
     }
     user.roomId = this.id;
     if (!user.roomHandler) {
-      user.roomHandler = new RoomHandler(this.id, this.nsp, this.nsp.sockets[user.id], data => {
+      user.roomHandler = new RoomHandler(this.id, user.nickName, this.nsp, this.nsp.sockets[user.id], data => {
         console.log('@@##游戏数据:' + JSON.stringify(data));
         this.game.handleData(data);
       }, event => {
