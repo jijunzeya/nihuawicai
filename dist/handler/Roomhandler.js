@@ -28,14 +28,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var RoomHandler = function () {
 
-  // createRoomCallback;
+  // _rooms;
 
-  // joinedRoomCallback;
 
-  function RoomHandler(id, nsp, socket, handleGameData, handleGameEvent) {
+  // _user;
+
+  function RoomHandler(id, nickName, nsp, socket, handleGameData, handleGameEvent) {
     _classCallCheck(this, RoomHandler);
 
     this.roomId = id;
+    this.nickName = nickName;
     this._namespace = nsp;
     // this._rooms = rooms;
     this._socket = socket;
@@ -47,10 +49,9 @@ var RoomHandler = function () {
     this.initSocket(this._socket);
   }
 
-  // _rooms;
+  // createRoomCallback;
 
-
-  // _user;
+  // joinedRoomCallback;
 
   _createClass(RoomHandler, [{
     key: 'removeAllListener',
@@ -121,7 +122,7 @@ var RoomHandler = function () {
     value: function onUserChatMessage(message) {
       console.log('onUserChatMessage:' + message);
       this._namespace.to(this.roomId).emit('serverSendUserChat', {
-        nick: this._socket.id,
+        nick: this.nickName,
         message: message
       });
 
@@ -151,7 +152,7 @@ var RoomHandler = function () {
   }, {
     key: 'disConnect',
     value: function disConnect() {
-      console.log('User ' + this._sockect.id + ' disconneted');
+      console.log('User ' + this.nickName + ' disconneted');
       // this._socket.disConnect();
     }
   }]);
